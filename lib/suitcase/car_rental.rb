@@ -11,6 +11,11 @@ module Suitcase
     end
 
     class << self
+      def allowed?
+        response = Net::HTTP.get_response(build_url({}))
+        response.code != "403"
+      end
+
       def find(info)
         parsed = parse_json(build_url(info))
         parse_errors(parsed)
