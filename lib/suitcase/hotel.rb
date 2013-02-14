@@ -341,6 +341,9 @@ module Suitcase
           raw_data["RateInfo"]["ChargeableRateInfo"]["Surcharges"] &&
           [raw_data["RateInfo"]["ChargeableRateInfo"]["Surcharges"]["Surcharge"]].
           flatten.map { |s| Surcharge.parse(s) }
+        room_data[:surcharge_total] = room_data[:surcharges].inject(0) {|sum, surcharge|
+          sum + surcharge.amount.to_f
+        }
         room_data[:bed_types] = [raw_data["BedTypes"]["BedType"]].flatten.map do |x|
           BedType.new(id: x["@id"], description: x["description"])
         end if raw_data["BedTypes"] && raw_data["BedTypes"]["BedType"]
